@@ -21,12 +21,12 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    values = request.get_json()
+    values = request.get_json(force=True)
 
     # Check for required values
     required = ['sender', 'recipient', 'amount']
-    # if not all(k in values for k in required):
-    #     return 'Missing Values', 400
+    if not all(k in values for k in required):
+        return 'Missing Values', 400
 
     # Create the new transaction
     index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
