@@ -32,6 +32,13 @@ class TestBlockchain(unittest.TestCase):
         hash = self.bc.hash( block )
         self.assertEqual( hash, '5b1486f0e4f72e8413c26da4e967a6a43c0267e60e517cee0866084e8b484071')
 
+    def test_valid_proof(self):
+        vp = self.bc.valid_proof(1,1)
+        self.assertFalse(vp)
+
+    def test_proof_of_work(self):
+        proof = self.bc.proof_of_work(100)
+        self.assertEqual(proof, 35293)
 
 if __name__ == '__main__':
     unittest.main()
