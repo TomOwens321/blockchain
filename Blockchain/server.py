@@ -17,6 +17,14 @@ blockchain = Blockchain()
 
 @app.route('/mine', methods=['GET'])
 def mine():
+    # Check for new transactions to mine - added by me
+    new_transactions = blockchain.current_transactions
+    if not new_transactions:
+        response = {
+            'message': "List is empty - No pudding for you!"
+        }
+        return jsonify(response), 200
+
     # Run a Proof of Work to get the next proof
     last_block = blockchain.last_block
     last_proof = last_block['proof']
