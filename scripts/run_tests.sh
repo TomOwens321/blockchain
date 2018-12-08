@@ -2,7 +2,6 @@
 set +e
 exit_code=0
 
-. bin/activate
 testfolder="tests"
 
 for file in $( ls ${testfolder}/test*.py )
