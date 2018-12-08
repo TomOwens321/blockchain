@@ -6,7 +6,6 @@ import json
 import hashlib
 import requests
 
-
 # Instantiate our node
 app = Flask(__name__)
 
