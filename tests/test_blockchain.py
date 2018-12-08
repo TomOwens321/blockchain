@@ -40,5 +40,10 @@ class TestBlockchain(unittest.TestCase):
         proof = self.bc.proof_of_work(100)
         self.assertEqual(proof, 35293)
 
+    def test_register_node(self):
+        node = '192.168.0.1:5000'
+        self.bc.register_node( node )
+        self.assertIsNotNone(self.bc.nodes)
+
 if __name__ == '__main__':
     unittest.main()
