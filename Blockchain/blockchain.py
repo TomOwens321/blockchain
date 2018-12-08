@@ -74,7 +74,9 @@ class Blockchain(object):
           :return: None
         """
         parsed_url = urlparse(address)
+        #print("Parsed URL: {}").format(parsed_url)
         self.nodes.add(parsed_url.netloc)
+        #print("Nodes: {}").format(self.nodes)
 
     def valid_chain(self, chain):
         """
@@ -87,9 +89,9 @@ class Blockchain(object):
 
         while current_index < len(chain):
             block = chain[current_index]
-            print('{}').format(last_block)
-            print('{}').format(block)
-            print('\n----------------------\n')
+            # print('{}').format(last_block)
+            # print('{}').format(block)
+            # print('\n----------------------\n')
 
             # Check that the hash of block is correct
             if block['previous_hash'] != self.hash(last_block):
@@ -110,6 +112,7 @@ class Blockchain(object):
           :return: <bool> True if our chain was replaced, False if not
         """
         neighbors = self.nodes
+        print(neighbors)
         new_chain = None
 
         # We only care about chains longer than our own
