@@ -3,7 +3,6 @@ set +e
 exit_code=0
 
 . bin/activate
-python3 -m pip install -r requirements.txt
 testfolder="tests"
 
 for file in $( ls ${testfolder}/test*.py )
