@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'jslave' }
+    agent { label 'ubuntu' }
     stages {
         stage('Checkout') {
             steps {
