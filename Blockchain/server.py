@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from blockchain import Blockchain
 from flask import Flask, jsonify, request
 from uuid import uuid4
