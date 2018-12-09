@@ -52,7 +52,7 @@ class Blockchain(object):
         })
         return self.last_block['index'] + 1
 
-    def proof_of_work(self, last_proof):
+    def proof_of_work(self, last_proof, previous_hash):
         """
         Simple Proof of Work Algorithm:
          - Find a number p' such that hash(pp') contains leading 4 zeroes
@@ -61,9 +61,9 @@ class Blockchain(object):
         :return: <int>
         """
         proof = 0
-
+        challenge = '{}{}'.format(last_proof,previous_hash).encode()
         # Incrementally test numbers until a valid proof is reached
-        while self.valid_proof( last_proof, proof ) is False:
+        while self.valid_proof( challenge, proof ) is False:
             proof += 1
         return proof
 

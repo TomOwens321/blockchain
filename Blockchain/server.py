@@ -28,7 +28,8 @@ def mine():
     # Run a Proof of Work to get the next proof
     last_block = blockchain.last_block
     last_proof = last_block['proof']
-    proof = blockchain.proof_of_work(last_proof)
+    previous_hash = blockchain.hash(last_block)
+    proof = blockchain.proof_of_work(last_proof, previous_hash)
 
     # Reward ourself for finding the proof
     blockchain.new_transaction(
@@ -38,7 +39,6 @@ def mine():
     )
 
     # Forge the new block - add it to the chain
-    previous_hash = blockchain.hash(last_block)
     block = blockchain.new_block(proof, previous_hash)
 
     response = {
