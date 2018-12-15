@@ -75,6 +75,16 @@ def full_chain():
     }
     return jsonify(response), 200
 
+@app.route('/nodes', methods=['GET'])
+def nodes():
+    nodes = []
+    for node in blockchain.nodes:
+        nodes.append(node)
+    response = {
+        'nodes': nodes
+    }
+    return jsonify(response), 200
+
 @app.route('/nodes/register', methods=['POST'])
 def register_nodes():
     values = request.get_json()
