@@ -25,6 +25,7 @@ class Blockchain(object):
             'index': len( self.chain ) + 1,
             'timestamp': time(),
             'transactions': self.current_transactions,
+            'merkle': self.hash(self.current_transactions),
             'proof': proof,
             'previous_hash': previous_hash or self.hash(self.chain[-1])
         }
@@ -74,9 +75,7 @@ class Blockchain(object):
           :return: None
         """
         parsed_url = urlparse(address)
-        #print("Parsed URL: {}").format(parsed_url)
         self.nodes.add(parsed_url.netloc)
-        #print("Nodes: {}").format(self.nodes)
 
     def valid_chain(self, chain):
         """
@@ -89,9 +88,6 @@ class Blockchain(object):
 
         while current_index < len(chain):
             block = chain[current_index]
-            # print('{}').format(last_block)
-            # print('{}').format(block)
-            # print('\n----------------------\n')
 
             # Check that the hash of block is correct
             if block['previous_hash'] != self.hash(last_block):
