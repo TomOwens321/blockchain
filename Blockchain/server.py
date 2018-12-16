@@ -29,7 +29,7 @@ def mine():
 
     # Run a Proof of Work to get the next proof
     last_block = blockchain.last_block
-    last_proof = last_block['merkle']
+    last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_proof)
 
     # Reward ourself for finding the proof
