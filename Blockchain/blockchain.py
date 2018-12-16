@@ -7,13 +7,14 @@ from urllib.parse import urlparse
 
 class Blockchain(object):
     def __init__(self, testing=False):
+        self.testing = testing
         self.chain = []
         self.current_transactions = []
         self.nodes = set({'localhost:5000','192.168.1.160:5000'})
 
         if testing:
             # Create the genesis block
-            self.genesys_block()
+            self.genesis_block()
         else:
             self._read_chain()
             self.resolve_conflicts()
@@ -22,6 +23,7 @@ class Blockchain(object):
             self._write_chain()
 
     def genesis_block(self):
+        self.chain = []
         self.new_block( previous_hash=1, proof=100)
 
     def new_block(self, proof, previous_hash=None):
@@ -157,6 +159,9 @@ class Blockchain(object):
         return True
 
     def _write_chain(self, file='chain.json'):
+        if self.testing:
+            return True
+
         with open(file, 'w') as outfile:
             json.dump(self.chain, outfile)
         return True
