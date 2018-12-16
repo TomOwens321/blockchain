@@ -22,13 +22,14 @@ def mine():
     new_transactions = blockchain.current_transactions
     if not new_transactions:
         response = {
-            'message': "List is empty - No pudding for you!"
+            'message': "List is empty - No pudding for you!",
+            'wallet': node_identifier
         }
         return jsonify(response), 200
 
     # Run a Proof of Work to get the next proof
     last_block = blockchain.last_block
-    last_proof = last_block['proof']
+    last_proof = last_block['merkle']
     proof = blockchain.proof_of_work(last_proof)
 
     # Reward ourself for finding the proof
