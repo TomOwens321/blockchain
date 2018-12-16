@@ -10,7 +10,7 @@ class Blockchain(object):
         self.testing = testing
         self.chain = []
         self.current_transactions = []
-        self.nodes = set({'localhost:5000','192.168.1.160:5000'})
+        self.nodes = set({'localhost:5000'})
 
         if testing:
             # Create the genesis block
