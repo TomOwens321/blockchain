@@ -22,7 +22,8 @@ def mine():
     new_transactions = blockchain.current_transactions
     if not new_transactions:
         response = {
-            'message': "List is empty - No pudding for you!"
+            'message': "List is empty - No pudding for you!",
+            'wallet': node_identifier
         }
         return jsonify(response), 200
 
@@ -72,6 +73,16 @@ def full_chain():
     response = {
         'chain': blockchain.chain,
         'length': len(blockchain.chain)
+    }
+    return jsonify(response), 200
+
+@app.route('/nodes', methods=['GET'])
+def nodes():
+    nodes = []
+    for node in blockchain.nodes:
+        nodes.append(node)
+    response = {
+        'nodes': nodes
     }
     return jsonify(response), 200
 
