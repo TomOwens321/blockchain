@@ -13,11 +13,16 @@ class Blockchain(object):
 
         if testing:
             # Create the genesis block
-            self.new_block( previous_hash=1, proof=100)
+            self.genesys_block()
         else:
             self._read_chain()
             self.resolve_conflicts()
+            if len(self.chain) == 0:
+                self.genesis_block()
             self._write_chain()
+
+    def genesis_block(self):
+        self.new_block( previous_hash=1, proof=100)
 
     def new_block(self, proof, previous_hash=None):
         """ 
@@ -138,6 +143,7 @@ class Blockchain(object):
         # Replace our chain if necessary
         if new_chain:
             self.chain = new_chain
+            self._write_chain()
             return True
 
         return False
