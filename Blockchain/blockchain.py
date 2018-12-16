@@ -6,12 +6,24 @@ from uuid import uuid4
 from urllib.parse import urlparse
 
 class Blockchain(object):
-    def __init__(self):
+    def __init__(self, testing=False):
+        self.testing = testing
         self.chain = []
         self.current_transactions = []
-        self.nodes = set()
+        self.nodes = set({'localhost:5000'})
 
-        # Create the genesis block
+        if testing:
+            # Create the genesis block
+            self.genesis_block()
+        else:
+            self._read_chain()
+            self.resolve_conflicts()
+            if len(self.chain) == 0:
+                self.genesis_block()
+            self._write_chain()
+
+    def genesis_block(self):
+        self.chain = []
         self.new_block( previous_hash=1, proof=100)
 
     def new_block(self, proof, previous_hash=None):
@@ -35,6 +47,7 @@ class Blockchain(object):
 
         # Add the block to the chain
         self.chain.append( block )
+        self._write_chain()
 
         return block
 
@@ -116,23 +129,42 @@ class Blockchain(object):
 
         # Get and verify all neighbors chains
         for node in neighbors:
-            url = 'http://{}/chain'.format(node)
-            response = requests.get(url)
-            if response.status_code == 200:
-                length = response.json()['length']
-                chain  = response.json()['chain']
+            try:
+                url = 'http://{}/chain'.format(node)
+                response = requests.get(url)
+                if response.status_code == 200:
+                    length = response.json()['length']
+                    chain  = response.json()['chain']
 
-                # Check if longer and chain is valid
-                if length > max_length and self.valid_chain(chain):
-                    max_length = length
-                    new_chain = chain
-
+                    # Check if longer and chain is valid
+                    if length > max_length and self.valid_chain(chain):
+                        max_length = length
+                        new_chain = chain
+            except:
+                return False
         # Replace our chain if necessary
         if new_chain:
             self.chain = new_chain
+            self._write_chain()
             return True
 
         return False
+
+    def _read_chain(self, file='chain.json'):
+        try:
+            with open(file) as json_data:
+                self.chain = json.load(json_data)
+        except:
+            return False
+        return True
+
+    def _write_chain(self, file='chain.json'):
+        if self.testing:
+            return True
+
+        with open(file, 'w') as outfile:
+            json.dump(self.chain, outfile)
+        return True
 
     @staticmethod
     def valid_proof(last_proof, proof):
@@ -145,7 +177,7 @@ class Blockchain(object):
 
         guess = '{}{}'.format(last_proof,proof).encode()
         guess_hash = hashlib.sha256( guess ).hexdigest()
-        return guess_hash[:4] == "0000"
+        return guess_hash[:5] == "00000"
 
     @staticmethod
     def hash(block):

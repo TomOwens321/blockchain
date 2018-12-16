@@ -5,7 +5,7 @@ from Blockchain.blockchain import Blockchain
 
 class TestBlockchain(unittest.TestCase):
     def setUp(self):
-        self.bc = Blockchain()
+        self.bc = Blockchain(testing=True)
     
     def test_the_truth(self):
         self.assertTrue( True )
