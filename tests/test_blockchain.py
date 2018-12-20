@@ -38,7 +38,7 @@ class TestBlockchain(unittest.TestCase):
 
     def test_proof_of_work(self):
         proof = self.bc.proof_of_work(100)
-        self.assertEqual(proof, 35293)
+        self.assertEqual(proof, 888273)
 
     def test_register_node(self):
         node = '192.168.0.1:5000'
